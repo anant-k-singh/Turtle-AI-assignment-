@@ -205,20 +205,6 @@ def evaluationFunction(gameState,symbol=symbolA):
 		score = getScore(gameState)[1]
 	scoreA = 0
 	scoreB = 0
-	# for i in xrange(0,ROWS):
-	# 	for j in xrange(0,COLS):
-	# 		if gameState.matrix[i][j] == symbolA:
-	# 			for dir in xrange(0,len(dr)):
-	# 				nextr, nextc = i+dr[dir], j+dc[dir]
-	# 				if insideboard(nextr+dr[dir],nextc+dc[dir]) and gameState.matrix[i][j] == symbolB and gameState.matrix[nextr+dr[dir]][nextc+dc[dir]] == symbolEmpty:
-	# 					scoreA += 1
-	# 		elif gameState.matrix[i][j] == symbolB:
-	# 			for dir in xrange(0,len(dr)):
-	# 				nextr, nextc = i+dr[dir], j+dc[dir]
-	# 				if insideboard(nextr+dr[dir],nextc+dc[dir]) and gameState.matrix[i][j] == symbolA and gameState.matrix[nextr+dr[dir]][nextc+dc[dir]] == symbolEmpty:
-	# 					scoreB += 1
-	# if scoreB > 0:
-	# 	scoreB = 999999
 	return score + scoreA - scoreB
 
 def randomAgent():
@@ -231,37 +217,17 @@ def randomAgent():
 				if len(actions) > 0:
 					validPiece.append([i,j,actions])
 	index = random.randint(0,len(validPiece)-1)
-	# print(validPiece[index])
 	action_index = random.randint(0,len(validPiece[index][2])-1)
-	# print("idx",action_index)
 	action = validPiece[index][2][action_index]
 	applyMove(validPiece[index][0],validPiece[index][1],action)
 
 def AlphaBetaAction(currentState,curDepth,A,B,Depth,symbol=symbolA):
 	global minMaxTurn
-	# print 'mturn',minMaxTurn
-	# minCount=0
-	# maxCount=0
-	# maxList=[]
-	# minList=[]
 	bestScore = [-999999]
 	for i in xrange(0,ROWS):
 		for j in xrange(0,COLS):
 			if currentState.matrix[i][j]==symbol:
-				# maxCount=maxCount+1
-				# maxList.append([i,j])
 				s = Max(currentState,curDepth,A,B,i,j,Depth,bestScore,symbol)
-				# print "score for ",i,',',j,' = ',s
-	# for i in xrange(0,maxCount):
-		# minMaxTurn=1-minMaxTurn
-		# print currentState.matrix
-		# Max(currentState,curDepth,A,B,maxList[i][0],maxList[i][1])
-	# else:
-	# 	print 'else'
-	# 	for i in xrange(0,minCount):
-	# 		minMaxTurn=1-minMaxTurn
-	# 		print 'min'
-	# 		return Min(currentState,curDepth,A,B,minList[i][0],minList[i][1],Depth)
 flag = 0
 
 def Max(currentState,curDepth,A,B,r,c,Depth,bestScore,symbol):
@@ -288,7 +254,6 @@ def Max(currentState,curDepth,A,B,r,c,Depth,bestScore,symbol):
 			for j in xrange(0,COLS):
 				if currentState.matrix[i][j] == -symbol:
 					p=Min(nextState,curDepth+1,A,B,i,j,Depth,minBestScore,symbol)
-			# 		minMaxTurn=1-minMaxTu
 					if p>bestScore[0]:
 						if curDepth==0:
 							del bestrow[:]
@@ -312,25 +277,19 @@ def Max(currentState,curDepth,A,B,r,c,Depth,bestScore,symbol):
 
 def Min(currentState, curDepth,A,B,r,c,Depth,minBestScore, symbol):
 	global flag
-	# print 'minDepth',curDepth
 	if curDepth == Depth or terminalState(currentState):
-		# print 'dc'
 		return evaluationFunction(currentState,symbol)
 	legalMoves = getLegalActions(r,c,currentState)
-	# Max's turn
-	# if Min_idx == 1:
-	# flag = 0
 	if len(legalMoves) == 0:
 		flag = flag +1
 	if flag==getScore(currentState)[1]:
 		print 'Draw!'
 		sys.exit()
+
 	for move in legalMoves:
 		nextState = successor(currentState,r,c,move)
 		if terminalState(nextState):
-			# return evaluationFunction(nextState)
 			return -999999,flag
-		# score.append( Max(nextState,curDepth+1) )
 		bestScore = [-999999]
 		for i in xrange(0,ROWS):
 			for j in xrange(0,COLS):
@@ -338,7 +297,6 @@ def Min(currentState, curDepth,A,B,r,c,Depth,minBestScore, symbol):
 					p=Max(nextState,curDepth,A,B,i,j,Depth,bestScore,symbol)
 				   	if(p<minBestScore[0]):
 						minBestScore[0]=p
-		# score = min(score,AlphaBetaAction(nextState,curDepth,A,B,Depth))
 		if minBestScore[0] < A:
 			return minBestScore[0],flag
 		B = min(B,minBestScore[0])
@@ -356,9 +314,6 @@ def AI_Agent(symbol=symbolA):
 	AlphaBetaAction(currentState,0,A,B,Depth,symbol)
 
 	randomIndex = random.randint(0,len(bestrow)-1)
-	# print(bestrow)
-	# print(bestcol)
-	# print(bestdir)
 	applyMove(bestrow[randomIndex],bestcol[randomIndex],bestdir[randomIndex])
 
 def AIvRandom():
@@ -391,7 +346,6 @@ def AIvAI():
 
 def f(frow, fcol):
 	global scol,srow,turn
-	# print(srow, scol, frow, fcol)
 	dir = getDir(srow, scol, frow, fcol)
 	if dir != -1 and validMove(srow,scol,dir,board,turn):
 		applyMove(srow,scol,dir)
