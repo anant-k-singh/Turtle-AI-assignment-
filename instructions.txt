@@ -1,0 +1,13 @@
+To run the program:
+Run the command:
+
+-> python AI_assignment.py [argument]
+
+List of valid arguments:
+
+1) avr  (AI vs Random)
+2) hva  (human vs AI,  Instructions for human player: 1) select the desired Blue cell 2) select the next cell in the desired direction.  )
+3) ava  (AI vs AI)
+
+Example -> python AI_assignment.py avr
+
